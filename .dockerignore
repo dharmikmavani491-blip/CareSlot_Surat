@@ -1,0 +1,7 @@
+node_modules
+backend/database/*.sqlite
+backend/database/*.sqlite-wal
+backend/database/*.sqlite-shm
+*.log
+.git
+.gitignore

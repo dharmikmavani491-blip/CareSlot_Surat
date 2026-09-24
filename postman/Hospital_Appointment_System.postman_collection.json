@@ -1,0 +1,376 @@
+{
+  "info": {
+    "_postman_id": "c1f79a92-4d2b-42be-b1e9-online-hospital-pbl",
+    "name": "Online Hospital Appointment Booking System - WAD PBL 2",
+    "description": "Comprehensive Postman collection for testing all REST API endpoints of the Online Hospital Appointment Booking System, including Authentication, Hospitals, Departments, Doctors, Time Slots, Appointments, and Patient Profiles.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "patientToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hospitalToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Patient Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"rahul.sharma@demo.com\",\n  \"password\": \"patient123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Hospital Admin Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"civil.admin@demo.com\",\n  \"password\": \"hospital123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Register Patient",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"arjun_patel\",\n  \"email\": \"arjun.patel@demo.com\",\n  \"password\": \"patient123\",\n  \"role\": \"patient\",\n  \"full_name\": \"Arjun Patel\",\n  \"age\": 32,\n  \"gender\": \"Male\",\n  \"contact\": \"+91-98765-43210\",\n  \"address\": \"Vesu Surat\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          }
+        },
+        {
+          "name": "Get Current User Profile (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{patientToken}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Hospitals",
+      "item": [
+        {
+          "name": "Get All Hospitals",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/hospitals", "host": ["{{baseUrl}}"], "path": ["hospitals"] }
+          }
+        },
+        {
+          "name": "Get Hospital By ID",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/hospitals/1", "host": ["{{baseUrl}}"], "path": ["hospitals", "1"] }
+          }
+        },
+        {
+          "name": "Get Hospital Dashboard Stats",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/hospitals/1/stats", "host": ["{{baseUrl}}"], "path": ["hospitals", "1", "stats"] }
+          }
+        },
+        {
+          "name": "Update Hospital Details (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{hospitalToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"opd_timings\": \"08:30 AM - 05:30 PM\",\n  \"contact_phone\": \"+91-261-2244499\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/hospitals/1", "host": ["{{baseUrl}}"], "path": ["hospitals", "1"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Departments",
+      "item": [
+        {
+          "name": "Get All Departments",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/departments?hospital_id=1", "host": ["{{baseUrl}}"], "path": ["departments"], "query": [{ "key": "hospital_id", "value": "1" }] }
+          }
+        },
+        {
+          "name": "Create Department (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{hospitalToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hospital_id\": 1,\n  \"name\": \"Dermatology & Skin Care\",\n  \"description\": \"Comprehensive skin laser and allergy care\",\n  \"icon\": \"sparkles\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/departments", "host": ["{{baseUrl}}"], "path": ["departments"] }
+          }
+        },
+        {
+          "name": "Update Department (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{hospitalToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated advanced skin and allergy therapies\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/departments/1", "host": ["{{baseUrl}}"], "path": ["departments", "1"] }
+          }
+        },
+        {
+          "name": "Delete Department (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{hospitalToken}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/departments/24", "host": ["{{baseUrl}}"], "path": ["departments", "24"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Doctors & Today's Schedule",
+      "item": [
+        {
+          "name": "Get Doctors by Hospital & Department",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/doctors?hospital_id=1&department_id=1", "host": ["{{baseUrl}}"], "path": ["doctors"] }
+          }
+        },
+        {
+          "name": "Get Today's Doctor Schedule (Section 4)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/doctors/1/schedule?date=2026-09-24", "host": ["{{baseUrl}}"], "path": ["doctors", "1", "schedule"] }
+          }
+        },
+        {
+          "name": "Create Doctor (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{hospitalToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hospital_id\": 1,\n  \"department_id\": 1,\n  \"name\": \"Dr. Harish Vyas\",\n  \"qualification\": \"MBBS, MD\",\n  \"specialization\": \"Internal Medicine & Geriatrics\",\n  \"experience_years\": 10,\n  \"consultation_fee\": 400,\n  \"room_number\": \"Room 105\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/doctors", "host": ["{{baseUrl}}"], "path": ["doctors"] }
+          }
+        },
+        {
+          "name": "Update Doctor (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{hospitalToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"consultation_fee\": 450,\n  \"room_number\": \"Room 106\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/doctors/1", "host": ["{{baseUrl}}"], "path": ["doctors", "1"] }
+          }
+        },
+        {
+          "name": "Delete Doctor (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{hospitalToken}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/doctors/24", "host": ["{{baseUrl}}"], "path": ["doctors", "24"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Time Slots",
+      "item": [
+        {
+          "name": "Get Available Slots (Booking Step 5)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/slots/available?doctor_id=1&date=2026-09-24", "host": ["{{baseUrl}}"], "path": ["slots", "available"] }
+          }
+        },
+        {
+          "name": "Create Time Slot (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{hospitalToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"doctor_id\": 1,\n  \"date\": \"2026-10-01\",\n  \"start_time\": \"04:00 PM\",\n  \"end_time\": \"04:30 PM\",\n  \"status\": \"AVAILABLE\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/slots", "host": ["{{baseUrl}}"], "path": ["slots"] }
+          }
+        },
+        {
+          "name": "Update Time Slot Status (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{hospitalToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"BLOCKED\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/slots/1", "host": ["{{baseUrl}}"], "path": ["slots", "1"] }
+          }
+        },
+        {
+          "name": "Delete Time Slot (DELETE)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{hospitalToken}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/slots/65", "host": ["{{baseUrl}}"], "path": ["slots", "65"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Appointments",
+      "item": [
+        {
+          "name": "Get Appointments (Filtered)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{patientToken}}" }],
+            "url": { "raw": "{{baseUrl}}/appointments?status=Pending", "host": ["{{baseUrl}}"], "path": ["appointments"] }
+          }
+        },
+        {
+          "name": "Create Appointment Request (POST)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{patientToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hospital_id\": 1,\n  \"department_id\": 1,\n  \"doctor_id\": 1,\n  \"date\": \"2026-10-02\",\n  \"time_slot\": \"10:00 AM\",\n  \"reason\": \"Seasonal allergies and persistent cough\",\n  \"symptoms\": \"Runny nose, sneezing, mild throat irritation\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/appointments", "host": ["{{baseUrl}}"], "path": ["appointments"] }
+          }
+        },
+        {
+          "name": "Approve Appointment Request (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{hospitalToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Approved\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/appointments/6/status", "host": ["{{baseUrl}}"], "path": ["appointments", "6", "status"] }
+          }
+        },
+        {
+          "name": "Reject Appointment Request (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{hospitalToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Rejected\",\n  \"rejection_reason\": \"Doctor emergency call\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/appointments/7/status", "host": ["{{baseUrl}}"], "path": ["appointments", "7", "status"] }
+          }
+        },
+        {
+          "name": "Cancel Appointment (POST)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{patientToken}}" }],
+            "url": { "raw": "{{baseUrl}}/appointments/1/cancel", "host": ["{{baseUrl}}"], "path": ["appointments", "1", "cancel"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Patient Profiles",
+      "item": [
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{patientToken}}" }],
+            "url": { "raw": "{{baseUrl}}/patients/me", "host": ["{{baseUrl}}"], "path": ["patients", "me"] }
+          }
+        },
+        {
+          "name": "Update Patient Profile (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{patientToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Rahul Sharma\",\n  \"age\": 35,\n  \"contact\": \"+91-98250-99999\",\n  \"address\": \"402 Shivalik Residency, Adajan, Surat\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/patients/1", "host": ["{{baseUrl}}"], "path": ["patients", "1"] }
+          }
+        }
+      ]
+    }
+  ]
+}

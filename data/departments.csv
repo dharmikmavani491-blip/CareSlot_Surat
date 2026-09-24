@@ -1,0 +1,25 @@
+id,hospital_id,name,description,icon
+1,1,General Medicine,Diagnosis and non-surgical treatment of adult diseases and systemic illnesses,activity
+2,1,Orthopaedics,Treatment of musculoskeletal trauma sports injuries and degenerative diseases,bone
+3,1,Obstetrics & Gynaecology,Comprehensive maternity care women's reproductive health and surgeries,heart
+4,1,Paediatrics,Child healthcare immunization and developmental pediatrics,smile
+5,1,General Surgery,Open and minimally invasive surgical procedures for diverse ailments,scissors
+6,1,Ophthalmology,Vision care cataract surgeries and eye disorder treatments,eye
+7,2,Cardiology,Advanced cardiac diagnostics angioplasty and cardiac emergency interventions,heart-pulse
+8,2,Neurology & Neurosurgery,Brain and spine surgery neuro-rehabilitation and stroke interventions,cpu
+9,2,Orthopaedics & Joint Replacement,Total knee and hip replacements and sports arthroscopy,bone
+10,2,Nephrology & Renal Care,Kidney disease management hemodialysis and kidney transplantation,droplet
+11,2,Surgical Oncology,Surgical management of cancers comprehensive tumor care,shield
+12,2,Gastroenterology,Digestive tract endoscopy hepatology and luminal interventions,disc
+13,3,Orthopaedics & Joint Replacement,World-renowned Shalby knee replacement techniques and arthritis care,bone
+14,3,Cardiology,Non-invasive and interventional heart care catheterization,heart-pulse
+15,3,Pulmonology,Chest diseases asthma COPD sleep disorders and bronchoscopy,wind
+16,3,General Surgery,Laparoscopic minimally invasive and day-care surgical procedures,scissors
+17,4,Cardiology,Preventive cardiology heart failure clinic and ECG/Echo,heart-pulse
+18,4,Gastroenterology,Liver disorders endoscopic procedures and gut health,disc
+19,4,Dermatology & Cosmetology,Skin hair and nail therapies clinical allergy treatments,sparkles
+20,4,ENT & Head Neck Surgery,Ear nose throat surgeries sinus and microscopic voice surgery,mic
+21,5,General Medicine,Adult chronic condition management diabetes and hypertension,activity
+22,5,Urology & Kidney Care,Lithotripsy kidney stones prostate and reconstructive urology,filter
+23,5,Gynaecology & Infertility,Women's health fertility consultations and prenatal care,heart
+24,5,Ophthalmology,Glaucoma cornea laser cataract surgery and routine vision checks,eye

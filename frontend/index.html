@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Hospital Appointment Booking System | Surat Healthcare Network</title>
+  <meta name="description" content="Professional hospital appointment booking platform connecting patients with top accredited hospitals, clinical departments, and specialist doctors in Surat, Gujarat.">
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- ====================================================================
+       NAVBAR
+       ==================================================================== -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="#home" class="nav-brand">
+        <img src="assets/logo.svg" alt="CareSlot Logo">
+        <span>CareSlot Surat</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#home" class="nav-link active">Home</a></li>
+          <li><a href="#home" onclick="setTimeout(() => document.getElementById('home-bed-tracker')?.scrollIntoView({behavior:'smooth'}), 100)" class="nav-link">Live Bed Tracker</a></li>
+          <li><a href="#home" onclick="setTimeout(() => document.getElementById('home-blood-tracker')?.scrollIntoView({behavior:'smooth'}), 100)" class="nav-link">🩸 Blood Bank</a></li>
+          <li><a href="#home" onclick="setTimeout(() => document.getElementById('home-pmjay-checker')?.scrollIntoView({behavior:'smooth'}), 100)" class="nav-link">🛡️ PM-JAY Scheme</a></li>
+          <li id="nav-patient-tab" style="display: none;"><a href="#patient" class="nav-link">Patient Dashboard</a></li>
+          <li id="nav-hospital-tab" style="display: none;"><a href="#hospital" class="nav-link">Hospital Dashboard</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-auth">
+        <!-- Logged out state -->
+        <div id="nav-auth-section">
+          <a href="#auth" class="btn btn-primary btn-sm">Sign In / Register</a>
+        </div>
+
+        <!-- Logged in state -->
+        <div id="nav-user-section" style="display: none; align-items: center; gap: 0.75rem;">
+          <div class="user-badge">
+            <span id="nav-user-name">User</span>
+            <span class="user-badge-role role-patient" id="nav-user-role">Patient</span>
+          </div>
+          <button id="nav-logout-btn" class="btn btn-outline btn-sm">Logout</button>
+        </div>
+
+        <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====================================================================
+       VIEW 1: HOME PAGE (BENEFITS, WORKFLOW, & ROLE-BASED LOGIN)
+       ==================================================================== -->
+  <main class="container view-page" id="view-home" style="padding-top: 2rem; padding-bottom: 3rem;">
+    
+    <!-- Hero Banner with Role-Based Login Card -->
+    <div class="card" style="background: linear-gradient(135deg, #065f46 0%, #059669 100%); color: #fff; padding: 2.75rem 2rem; margin-bottom: 2.5rem; border: none; box-shadow: var(--shadow-lg);">
+      <div class="hero-grid" style="display: grid; grid-template-columns: 1.25fr 1fr; gap: 2.25rem; align-items: center;">
+        
+        <!-- Left Hero Text -->
+        <div>
+          <span style="background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+            Surat Unified Healthcare Network
+          </span>
+          <h1 style="color: #fff; font-size: 2.35rem; margin: 1rem 0 0.85rem 0; line-height: 1.25;">
+            ONLINE HOSPITAL APPOINTMENT BOOKING SYSTEM
+          </h1>
+          <p style="color: #ecfdf5; font-size: 1.05rem; margin-bottom: 1.75rem; line-height: 1.6;">
+            Connect directly with verified specialists across premier accredited hospitals in Surat. Book outpatient appointments with guaranteed time slots, track approval status in real-time, and get your digital OPD medical pass instantly.
+          </p>
+          
+          <div style="display: flex; gap: 1.25rem; flex-wrap: wrap; font-size: 0.875rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="background: #34d399; color: #064e3b; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.75rem;">✓</span>
+              <span>5 Major Surat Hospitals</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="background: #34d399; color: #064e3b; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.75rem;">✓</span>
+              <span>24 Clinical Specialties</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <span style="background: #34d399; color: #064e3b; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.75rem;">✓</span>
+              <span>Zero Queues</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side: Interactive Role-Based Login Card -->
+        <div class="home-login-box">
+          <div style="text-align: center; margin-bottom: 1rem;">
+            <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">
+              Choose Access Portal
+            </span>
+          </div>
+
+          <!-- Role Toggle Buttons -->
+          <div class="role-tab-switcher">
+            <button type="button" class="role-tab-btn active" id="home-role-patient" onclick="switchHomeRole('patient')">
+              👤 Patient Portal
+            </button>
+            <button type="button" class="role-tab-btn" id="home-role-hospital" onclick="switchHomeRole('hospital')">
+              🏥 Hospital Portal
+            </button>
+          </div>
+
+          <!-- Patient Login Section -->
+          <div id="home-patient-section">
+            <div class="login-info-box" style="margin-bottom: 1.15rem; padding: 0.85rem 1rem; background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: var(--radius-md);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                <span style="font-weight: 700; font-size: 0.825rem; color: #065f46; display: flex; align-items: center; gap: 0.4rem;">
+                  <span>📋</span> <strong>Patient Login Credentials</strong>
+                </span>
+                <button type="button" class="btn-info-fill" onclick="fillPatientDemo()" title="Click to fill credentials">
+                  Auto-fill
+                </button>
+              </div>
+              <div style="font-size: 0.8rem; color: #047857; line-height: 1.5;">
+                <div>• <strong>Demo Email:</strong> <code style="background: rgba(255,255,255,0.7); padding: 1px 6px; border-radius: 3px;">rahul.sharma@demo.com</code></div>
+                <div>• <strong>Demo Password:</strong> <code style="background: rgba(255,255,255,0.7); padding: 1px 6px; border-radius: 3px;">patient123</code></div>
+              </div>
+              <div style="font-size: 0.735rem; color: #065f46; margin-top: 0.35rem; opacity: 0.85;">
+                Enter registered patient credentials to book consultations and access medical passes.
+              </div>
+            </div>
+
+            <form id="home-patient-form">
+              <div class="form-group">
+                <label class="form-label">Email or Username</label>
+                <input type="text" id="home-pat-email" class="form-control" value="rahul.sharma@demo.com" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" id="home-pat-pass" class="form-control" value="patient123" required />
+              </div>
+              <button type="submit" class="btn btn-primary btn-block" style="margin-top: 0.5rem;">
+                Sign In as Patient →
+              </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 1rem; font-size: 0.85rem;">
+              <a href="#auth" onclick="showAuthTab('register'); Auth.selectedRole = 'patient';">Don't have an account? Register as Patient</a>
+            </div>
+          </div>
+
+          <!-- Hospital Staff Login Section -->
+          <div id="home-hospital-section" style="display: none;">
+            <div class="login-info-box" style="margin-bottom: 1.15rem; padding: 0.85rem 1rem; background: #f0fdfa; border: 1.5px solid #99f6e4; border-radius: var(--radius-md);">
+              <div style="font-weight: 700; font-size: 0.825rem; color: #0f766e; display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
+                <span>📋</span> <strong>Hospital Staff & Admin Credentials</strong>
+              </div>
+              <div style="font-size: 0.775rem; color: #115e59; margin-bottom: 0.4rem; line-height: 1.4;">
+                Standard password for all demo hospital accounts: <code style="background: rgba(255,255,255,0.85); padding: 1px 6px; border-radius: 3px;">hospital123</code>
+              </div>
+              <div style="font-size: 0.75rem; color: #0f766e; line-height: 1.55; background: #ffffff; padding: 0.5rem 0.65rem; border-radius: var(--radius-sm); border: 1px solid #ccfbf1; max-height: 105px; overflow-y: auto;">
+                <div>• <strong>New Civil Hospital:</strong> <code>civil.admin@demo.com</code></div>
+                <div>• <strong>Kiran Hospital:</strong> <code>kiran.admin@demo.com</code></div>
+                <div>• <strong>Shalby Hospital:</strong> <code>shalby.admin@demo.com</code></div>
+                <div>• <strong>Sunshine Hospital:</strong> <code>sunshine.admin@demo.com</code></div>
+                <div>• <strong>Mahavir Hospital:</strong> <code>mahavir.admin@demo.com</code></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Select Hospital Portal</label>
+              <select id="home-hosp-selector" class="form-control" onchange="updateHospitalLoginFill()">
+                <option value="civil.admin@demo.com">New Civil Hospital Surat</option>
+                <option value="kiran.admin@demo.com">Kiran Multi Super Speciality Hospital</option>
+                <option value="shalby.admin@demo.com">Shalby Multi-Specialty Hospital</option>
+                <option value="sunshine.admin@demo.com">Sunshine Global Hospital</option>
+                <option value="mahavir.admin@demo.com">Mahavir Hospital & Research Centre</option>
+              </select>
+            </div>
+
+            <form id="home-hospital-form">
+              <div class="form-group">
+                <label class="form-label">Hospital Admin Username</label>
+                <input type="text" id="home-hosp-email" class="form-control" value="civil.admin@demo.com" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" id="home-hosp-pass" class="form-control" value="hospital123" required />
+              </div>
+              <button type="submit" class="btn btn-secondary btn-block" style="margin-top: 0.5rem;">
+                Access Hospital Portal →
+              </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 1rem; font-size: 0.85rem;">
+              <span style="color: var(--text-muted);">Authorised hospital staff and administration only</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         SECTION: WEBSITE BENEFITS
+         ================================================================== -->
+    <div style="text-align: center; margin-top: 3rem;">
+      <span style="color: var(--primary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">
+        Why Choose CareSlot
+      </span>
+      <h2 style="font-size: 2rem; color: var(--text-main); margin-top: 0.35rem;">
+        Key Platform Benefits
+      </h2>
+      <p style="max-width: 600px; margin: 0.5rem auto 0 auto; font-size: 0.95rem;">
+        Designed to streamline outpatient healthcare delivery, eliminate hospital wait times, and provide transparency for patients and healthcare providers.
+      </p>
+    </div>
+
+    <div class="benefits-grid">
+      <!-- Benefit 1 -->
+      <div class="benefit-card">
+        <div class="benefit-icon">⏱️</div>
+        <h4>Guaranteed OPD Time Slots</h4>
+        <p>Choose your preferred date and exact 30-minute time slot. Avoid spending hours in crowded OPD waiting rooms.</p>
+      </div>
+
+      <!-- Benefit 2 -->
+      <div class="benefit-card">
+        <div class="benefit-icon">👨‍⚕️</div>
+        <h4>Verified Specialist Doctors</h4>
+        <p>Access genuine, publicly listed senior doctors, surgeons, and department heads across Surat’s leading hospitals.</p>
+      </div>
+
+      <!-- Benefit 3 -->
+      <div class="benefit-card">
+        <div class="benefit-icon">🛡️</div>
+        <h4>Zero Double-Booking Conflicts</h4>
+        <p>Real-time slot reservation system locks confirmed slots immediately, preventing overlapping patient appointments.</p>
+      </div>
+
+      <!-- Benefit 4 -->
+      <div class="benefit-card">
+        <div class="benefit-icon">📄</div>
+        <h4>Instant Digital Medical Pass</h4>
+        <p>Receive a downloadable, printable appointment pass with your reference number, doctor room, and consultation fee.</p>
+      </div>
+
+      <!-- Benefit 5 -->
+      <div class="benefit-card">
+        <div class="benefit-icon">🔔</div>
+        <h4>Live Status Tracking</h4>
+        <p>Real-time status updates: Pending, Approved, Completed, or Cancelled with hospital remarks and instructions.</p>
+      </div>
+
+      <!-- Benefit 6 -->
+      <div class="benefit-card">
+        <div class="benefit-icon">🏥</div>
+        <h4>Surat Multi-Hospital Access</h4>
+        <p>One unified portal providing access to New Civil, Kiran, Shalby, Sunshine Global, and Mahavir Hospital.</p>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         SECTION: SYSTEM WORKFLOW (HOW IT WORKS)
+         ================================================================== -->
+    <div class="workflow-section">
+      <div style="text-align: center;">
+        <span style="color: var(--primary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">
+          Seamless Experience
+        </span>
+        <h2 style="font-size: 2rem; color: var(--text-main); margin-top: 0.35rem;">
+          How The System Works
+        </h2>
+        <p style="max-width: 600px; margin: 0.5rem auto 0 auto; font-size: 0.95rem;">
+          From doctor discovery to consultation in four simple, transparent steps.
+        </p>
+      </div>
+
+      <div class="workflow-grid">
+        <!-- Step 1 -->
+        <div class="workflow-card">
+          <div class="workflow-badge">STEP 1</div>
+          <div class="workflow-icon">🏥</div>
+          <h4 style="color: var(--primary-dark); margin-bottom: 0.35rem;">Select Hospital & Dept</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            Pick a Surat hospital and browse clinical departments like Cardiology, Orthopaedics, or Medicine.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="workflow-card">
+          <div class="workflow-badge">STEP 2</div>
+          <div class="workflow-icon">👨‍⚕️</div>
+          <h4 style="color: var(--primary-dark); margin-bottom: 0.35rem;">Choose Specialist Doctor</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            Review doctor qualifications, experience, room number, OPD timings, and consultation charges.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="workflow-card">
+          <div class="workflow-badge">STEP 3</div>
+          <div class="workflow-icon">🕒</div>
+          <h4 style="color: var(--primary-dark); margin-bottom: 0.35rem;">Select Available Slot</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            Select your consultation date and pick an available time slot displayed in clean green indicators.
+          </p>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="workflow-card">
+          <div class="workflow-badge">STEP 4</div>
+          <div class="workflow-icon">✓</div>
+          <h4 style="color: var(--primary-dark); margin-bottom: 0.35rem;">Confirmation & Pass</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            Hospital reviews the request. Upon approval, slot is booked and your digital pass is ready for consultation.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         SECTION: SURAT HOSPITALS DIRECTORY
+         ================================================================== -->
+    <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end;">
+      <div>
+        <h2 style="font-size: 1.6rem; color: var(--text-main);">Participating Hospitals in Surat</h2>
+        <p style="font-size: 0.95rem;">Real, publicly verified hospitals, clinical departments, and doctors in Surat, Gujarat.</p>
+      </div>
+    </div>
+
+    <!-- Participating Hospitals Grid -->
+    <div class="stats-grid" id="home-hospitals-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem;">
+      <!-- Populated dynamically via loadHomeShowcase -->
+    </div>
+
+    <!-- ==================================================================
+         SECTION: SURAT SPECIALIST DOCTOR DIRECTORY & REAL-TIME SEARCH
+         ================================================================== -->
+    <div style="margin-top: 3.5rem; margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span style="color: var(--primary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">
+            Verified Medical Specialists
+          </span>
+          <h2 style="font-size: 1.85rem; color: var(--text-main); margin-top: 0.25rem;">
+            Find Specialist Doctors in Surat
+          </h2>
+          <p style="font-size: 0.95rem; margin-top: 0.25rem; max-width: 650px;">
+            Browse 24 accredited department heads, senior consultants, and surgeons across Surat hospitals with real-time consultation booking.
+          </p>
+        </div>
+      </div>
+
+      <!-- Real-Time Doctor Search & Filters Bar -->
+      <div class="card" style="margin-top: 1.25rem; padding: 1.25rem; background: #ffffff; border: 1px solid var(--border);">
+        <div style="display: grid; grid-template-columns: 2fr 1.25fr 1.25fr auto; gap: 1rem; align-items: center;" class="filter-controls-grid">
+          <div>
+            <label class="form-label" style="font-size: 0.8rem; margin-bottom: 0.25rem;">Search Doctor or Specialty</label>
+            <input type="text" id="home-doc-search" class="form-control" placeholder="e.g. Cardiologist, Ortho, Dr. Mehta, Neuro..." oninput="HomeDoctorUI.filterDoctors()" />
+          </div>
+          <div>
+            <label class="form-label" style="font-size: 0.8rem; margin-bottom: 0.25rem;">Hospital</label>
+            <select id="home-doc-hosp-filter" class="form-control" onchange="HomeDoctorUI.filterDoctors()">
+              <option value="all">All Surat Hospitals</option>
+              <option value="1">New Civil Hospital</option>
+              <option value="2">Kiran Multi Super Speciality</option>
+              <option value="3">Shalby Multi-Specialty</option>
+              <option value="4">Sunshine Global Hospital</option>
+              <option value="5">Mahavir Hospital</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label" style="font-size: 0.8rem; margin-bottom: 0.25rem;">Specialty</label>
+            <select id="home-doc-dept-filter" class="form-control" onchange="HomeDoctorUI.filterDoctors()">
+              <option value="all">All Specialties</option>
+            </select>
+          </div>
+          <div style="display: flex; align-items: flex-end; padding-top: 1.35rem;">
+            <button type="button" class="btn btn-outline btn-sm" onclick="HomeDoctorUI.resetFilters()" title="Reset all filters">
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doctors Grid -->
+      <div class="stats-grid" id="home-doctors-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); margin-top: 1.5rem;">
+        <!-- Populated dynamically via HomeDoctorUI -->
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         SECTION: SURAT EMERGENCY SERVICES & BLOOD BANK DIRECTORY
+         ================================================================== -->
+    <div style="margin-top: 3.5rem; margin-bottom: 1.5rem;">
+      <div style="text-align: center; margin-bottom: 1.75rem;">
+        <span style="color: #dc2626; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">
+          24x7 Critical Medical Assistance
+        </span>
+        <h2 style="font-size: 1.85rem; color: var(--text-main); margin-top: 0.25rem;">
+          Surat Emergency Helplines & Blood Bank Hub
+        </h2>
+        <p style="font-size: 0.95rem; margin-top: 0.25rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+          Direct telephone helplines for urgent ambulance response, accredited blood banks, and trauma centers across Surat.
+        </p>
+      </div>
+
+      <div class="benefits-grid" style="margin-top: 1.5rem;">
+        <!-- Emergency Ambulance -->
+        <div class="benefit-card" style="border-top: 4px solid #dc2626;">
+          <div class="benefit-icon" style="background: #fef2f2; color: #dc2626;">🚑</div>
+          <h4>108 Emergency Ambulance</h4>
+          <p>Gujarat state-wide GVK EMRI free 24x7 emergency medical dispatch & life support ambulance.</p>
+          <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            <a href="tel:108" class="btn btn-danger btn-block btn-sm">📞 Call 108 Immediately</a>
+            <button type="button" class="btn btn-outline-danger btn-block btn-sm" onclick="AmbulanceUI.openDispatchModal()">
+              🚨 Live Dispatch Tracker
+            </button>
+          </div>
+        </div>
+
+        <!-- Surat Raktadan Kendra -->
+        <div class="benefit-card" style="border-top: 4px solid #b91c1c;">
+          <div class="benefit-icon" style="background: #fee2e2; color: #b91c1c;">🩸</div>
+          <h4>Surat Raktadan Kendra</h4>
+          <p>Premier non-profit NABH accredited regional blood bank & research centre located at Khatodara, Surat.</p>
+          <div style="margin-top: 1rem;">
+            <a href="tel:+912612425134" class="btn btn-outline-danger btn-block btn-sm">📞 +91-261-2425134</a>
+          </div>
+        </div>
+
+        <!-- Civil Hospital Blood Bank -->
+        <div class="benefit-card" style="border-top: 4px solid #059669;">
+          <div class="benefit-icon" style="background: #ecfdf5; color: #059669;">🏥</div>
+          <h4>Civil Hospital Blood Center</h4>
+          <p>Government medical college blood bank offering 24x7 all-group whole blood and platelet apheresis.</p>
+          <div style="margin-top: 1rem;">
+            <a href="tel:+912612244456" class="btn btn-outline-primary btn-block btn-sm">📞 +91-261-2244456</a>
+          </div>
+        </div>
+
+        <!-- Red Cross Society Blood Bank -->
+        <div class="benefit-card" style="border-top: 4px solid #ea580c;">
+          <div class="benefit-icon" style="background: #fff7ed; color: #ea580c;">❤️</div>
+          <h4>Indian Red Cross Blood Bank</h4>
+          <p>24x7 voluntary blood transfusion service and emergency plasma availability in Surat city center.</p>
+          <div style="margin-top: 1rem;">
+            <a href="tel:+912612465555" class="btn btn-outline btn-block btn-sm">📞 +91-261-2465555</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         SECTION: REAL-TIME SURAT HOSPITAL BED & ICU CAPACITY TRACKER
+         ================================================================== -->
+    <div id="home-bed-tracker" style="margin-top: 4rem; margin-bottom: 2rem;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+          <span style="color: var(--primary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">
+            Real-Time Public Health Telemetry
+          </span>
+          <h2 style="font-size: 1.85rem; color: var(--text-main); margin-top: 0.25rem;">
+            Surat Hospital Live Bed & ICU Capacity Tracker
+          </h2>
+          <p style="font-size: 0.95rem; margin-top: 0.25rem; color: var(--text-muted);">
+            Direct live bed availability feeds across Government and Accredited Trust hospitals in Surat.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+          <select id="bed-filter-hospital" class="form-control" onchange="BedTrackerUI.filterBeds()" style="min-width: 200px;">
+            <option value="all">All 5 Surat Hospitals</option>
+            <option value="1">New Civil Hospital Surat</option>
+            <option value="2">Kiran Multi Super Speciality</option>
+            <option value="3">Shalby Multi-Specialty</option>
+            <option value="4">Sunshine Global Hospital</option>
+            <option value="5">Mahavir Hospital & Research</option>
+          </select>
+          <select id="bed-filter-type" class="form-control" onchange="BedTrackerUI.filterBeds()" style="min-width: 170px;">
+            <option value="all">All Bed Categories</option>
+            <option value="General">General Ward</option>
+            <option value="Oxygen">Oxygen Supported</option>
+            <option value="ICU">ICU with Ventilator</option>
+            <option value="Dialysis">Dialysis Unit</option>
+            <option value="Trauma">Trauma Bay</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Citywide Capacity Metric Cards -->
+      <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); margin-bottom: 1.75rem;">
+        <div class="stat-card" style="border-left: 4px solid var(--primary);">
+          <div class="stat-icon" style="background: #ecfdf5; color: #059669;">🛏️</div>
+          <div class="stat-info">
+            <div class="stat-value" id="city-total-beds" style="color: #059669;">2,350</div>
+            <div class="stat-label">Total Monitored Beds</div>
+          </div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #10b981;">
+          <div class="stat-icon" style="background: #d1fae5; color: #047857;">🟢</div>
+          <div class="stat-info">
+            <div class="stat-value" id="city-avail-general" style="color: #047857;">543</div>
+            <div class="stat-label">Available General Beds</div>
+          </div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #0284c7;">
+          <div class="stat-icon" style="background: #e0f2fe; color: #0284c7;">🫁</div>
+          <div class="stat-info">
+            <div class="stat-value" id="city-avail-oxygen" style="color: #0284c7;">107</div>
+            <div class="stat-label">Oxygen Supported Beds</div>
+          </div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #d97706;">
+          <div class="stat-icon" style="background: #fef3c7; color: #d97706;">⚡</div>
+          <div class="stat-info">
+            <div class="stat-value" id="city-avail-icu" style="color: #d97706;">59</div>
+            <div class="stat-label">Available Ventilator ICUs</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Bed Availability Grid -->
+      <div class="stats-grid" id="home-beds-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem;">
+        <!-- Dynamically rendered by BedTrackerUI -->
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         SECTION: SURAT REGIONAL BLOOD BANK LIVE INVENTORY & REQUISITION
+         ================================================================== -->
+    <div id="home-blood-tracker" style="margin-top: 4rem; margin-bottom: 2rem;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+          <span style="color: #dc2626; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">
+            Surat Blood Transfusion Network
+          </span>
+          <h2 style="font-size: 1.85rem; color: var(--text-main); margin-top: 0.25rem;">
+            Surat Regional Blood Bank Live Availability
+          </h2>
+          <p style="font-size: 0.95rem; margin-top: 0.25rem; color: var(--text-muted);">
+            Real-time blood stock counts across New Civil Hospital Regional Blood Centre and accredited hospital blood banks in Surat.
+          </p>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <select id="blood-filter-hospital" class="form-control" style="width: auto; min-width: 170px;" onchange="BloodTrackerUI.filterStock()">
+            <option value="">All Surat Blood Banks</option>
+            <option value="1">New Civil Hospital Blood Centre</option>
+            <option value="2">Kiran Hospital Blood Centre</option>
+            <option value="3">Shalby Hospital Blood Bank</option>
+            <option value="4">Sunshine Global Blood Storage</option>
+            <option value="5">Mahavir Hospital Blood Bank</option>
+          </select>
+          <select id="blood-filter-group" class="form-control" style="width: auto; min-width: 120px;" onchange="BloodTrackerUI.filterStock()">
+            <option value="">All Groups</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+          </select>
+          <button class="btn btn-sm" style="background: #dc2626; color: #fff; font-weight: 600;" onclick="BloodTrackerUI.openRequisitionModal()">
+            🚨 Request Blood Units
+          </button>
+        </div>
+      </div>
+
+      <!-- Citywide Blood Metrics Strip -->
+      <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+        <div class="stat-card" style="border-left: 4px solid #dc2626;">
+          <div class="stat-icon" style="background: #fee2e2; color: #dc2626;">🩸</div>
+          <div class="stat-info">
+            <div class="stat-value" id="city-blood-total" style="color: #dc2626;">439</div>
+            <div class="stat-label">Total Blood Units Ready</div>
+          </div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #b91c1c;">
+          <div class="stat-icon" style="background: #fee2e2; color: #b91c1c;">🅾️</div>
+          <div class="stat-info">
+            <div class="stat-value" id="city-blood-o-neg" style="color: #b91c1c;">12</div>
+            <div class="stat-label">Universal Donor (O-) Units</div>
+          </div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #059669;">
+          <div class="stat-icon" style="background: #d1fae5; color: #059669;">🆎</div>
+          <div class="stat-info">
+            <div class="stat-value" id="city-blood-ab-pos" style="color: #059669;">41</div>
+            <div class="stat-label">Universal Plasma (AB+)</div>
+          </div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #0284c7;">
+          <div class="stat-icon" style="background: #e0f2fe; color: #0284c7;">🏥</div>
+          <div class="stat-info">
+            <div class="stat-value" id="city-blood-banks" style="color: #0284c7;">5</div>
+            <div class="stat-label">Accredited Blood Centres</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Blood Grid -->
+      <div class="stats-grid" id="home-blood-grid" style="grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1.25rem;">
+        <!-- Dynamically rendered by BloodTrackerUI -->
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         SECTION: AYUSHMAN BHARAT PM-JAY & MA AMRUTAM CASHLESS CHECKER
+         ================================================================== -->
+    <div id="home-pmjay-checker" style="margin-top: 4rem; margin-bottom: 2.5rem;">
+      <div class="pmjay-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+              <span style="background: #d97706; color: #fff; font-size: 0.725rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">
+                Government of Gujarat & National Health Authority
+              </span>
+              <span style="background: #059669; color: #fff; font-size: 0.725rem; font-weight: 800; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">
+                Up to ₹10,00,000 Cashless Cover
+              </span>
+            </div>
+            <h2 style="font-size: 1.85rem; color: #064e3b; margin: 0.25rem 0;">
+              🛡️ Ayushman Bharat PM-JAY & MA Amrutam Scheme Eligibility Checker
+            </h2>
+            <p style="color: #047857; font-size: 0.95rem; margin: 0; max-width: 780px;">
+              Verify cashless medical and surgical treatment benefits across empanelled hospitals in Surat under Pradhan Mantri Jan Arogya Yojana & Mukhyamantri Amrutam Gujarat.
+            </p>
+          </div>
+        </div>
+
+        <!-- Search Box Form -->
+        <div style="background: #fff; border: 1px solid #a7f3d0; border-radius: var(--radius-md); padding: 1.5rem; box-shadow: var(--shadow-sm); margin-bottom: 1.5rem;">
+          <label style="display: block; font-weight: 700; color: #064e3b; margin-bottom: 0.5rem; font-size: 0.95rem;">
+            Enter NFSA Ration Card Number / Ayushman Golden Card ID / Aadhaar Number:
+          </label>
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <input type="text" id="pmjay-search-input" class="form-control" style="flex: 1; min-width: 250px; font-size: 1rem; font-weight: 600;" placeholder="e.g. NFSA-SRT-8849 or PMJAY-GUJ-9921">
+            <button class="btn btn-primary" style="padding: 0.65rem 1.5rem; font-weight: 700;" onclick="PMJAYUI.checkEligibility()">
+              Verify Scheme Cover
+            </button>
+          </div>
+          <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-top: 0.75rem; font-size: 0.8rem; color: var(--text-muted);">
+            <span>Quick Demo Verification IDs:</span>
+            <button type="button" class="btn btn-outline btn-sm" style="font-size: 0.75rem; padding: 2px 8px;" onclick="PMJAYUI.quickCheck('NFSA-SRT-8849')">NFSA-SRT-8849 (Rahul Sharma)</button>
+            <button type="button" class="btn btn-outline btn-sm" style="font-size: 0.75rem; padding: 2px 8px;" onclick="PMJAYUI.quickCheck('PMJAY-GUJ-9921')">PMJAY-GUJ-9921 (Pooja Patel)</button>
+            <button type="button" class="btn btn-outline btn-sm" style="font-size: 0.75rem; padding: 2px 8px;" onclick="PMJAYUI.quickCheck('MAA-SURAT-4412')">MAA-SURAT-4412 (Amitabh Desai)</button>
+          </div>
+        </div>
+
+        <!-- Result Container -->
+        <div id="pmjay-result-container">
+          <!-- Dynamically populated by PMJAYUI -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ====================================================================
+       VIEW 2: DEDICATED AUTHENTICATION / LOGIN & REGISTER
+       ==================================================================== -->
+  <main class="container view-page" id="view-auth" style="display: none; padding-top: 2.5rem; padding-bottom: 3rem;">
+    <div style="max-width: 480px; margin: 0 auto;">
+      <!-- Role Switcher -->
+      <div class="card" style="margin-bottom: 1.5rem; text-align: center; padding: 1.25rem;">
+        <div style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.75rem; text-transform: uppercase;">
+          Select Access Role
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; background: var(--bg-muted); padding: 4px; border-radius: var(--radius-md);">
+          <button type="button" class="btn role-select-btn active" data-role="patient" style="border-radius: var(--radius-sm); font-size: 0.9rem;">
+            👤 Patient
+          </button>
+          <button type="button" class="btn role-select-btn" data-role="hospital" style="border-radius: var(--radius-sm); font-size: 0.9rem;">
+            🏥 Hospital
+          </button>
+        </div>
+      </div>
+
+      <!-- Auth Form Card -->
+      <div class="card">
+        <div class="sub-tabs" style="margin-bottom: 1.25rem;">
+          <button type="button" class="sub-tab-btn active" id="auth-tab-login" onclick="showAuthTab('login')">Sign In</button>
+          <button type="button" class="sub-tab-btn" id="auth-tab-register" onclick="showAuthTab('register')">Register Account</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form">
+          <div class="form-group">
+            <label class="form-label" for="login-email">Username or Email <span class="req">*</span></label>
+            <input type="text" id="login-email" class="form-control" placeholder="e.g. rahul.sharma@demo.com" required value="rahul.sharma@demo.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-password">Password <span class="req">*</span></label>
+            <input type="password" id="login-password" class="form-control" placeholder="••••••••" required value="patient123">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1rem;">Sign In</button>
+        </form>
+
+        <!-- Register Form -->
+        <form id="register-form" style="display: none;">
+          <div class="form-group">
+            <label class="form-label" for="reg-username">Username <span class="req">*</span></label>
+            <input type="text" id="reg-username" class="form-control" placeholder="choose_username" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Email Address <span class="req">*</span></label>
+            <input type="email" id="reg-email" class="form-control" placeholder="user@demo.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-fullname">Full Name <span class="req">*</span></label>
+            <input type="text" id="reg-fullname" class="form-control" placeholder="Full Legal Name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-contact">Contact Phone <span class="req">*</span></label>
+            <input type="tel" id="reg-contact" class="form-control" placeholder="+91-98765-43210" required>
+          </div>
+          <div class="form-group" id="reg-hospital-field" style="display: none;">
+            <label class="form-label" for="reg-hospital-id">Associated Hospital</label>
+            <select id="reg-hospital-id" class="form-control">
+              <option value="1">New Civil Hospital Surat</option>
+              <option value="2">Kiran Multi Super Speciality Hospital</option>
+              <option value="3">Shalby Multi-Specialty Hospital</option>
+              <option value="4">Sunshine Global Hospital</option>
+              <option value="5">Mahavir Hospital & Research Centre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-password">Create Password <span class="req">*</span></label>
+            <input type="password" id="reg-password" class="form-control" placeholder="Minimum 6 characters" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1rem;">Create Account</button>
+        </form>
+
+        <!-- Demo Credentials Box -->
+        <div style="margin-top: 1.5rem; padding: 1rem; background: var(--bg-muted); border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.825rem;">
+          <strong style="color: var(--primary-dark); display: block; margin-bottom: 0.5rem;">📋 Test Account Login Information:</strong>
+          <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+            <a href="javascript:void(0)" onclick="fillCredentials('rahul.sharma@demo.com', 'patient123', 'patient')" style="color: var(--primary); font-weight: 500;">
+              👤 Patient: <code>rahul.sharma@demo.com</code> / <code>patient123</code>
+            </a>
+            <a href="javascript:void(0)" onclick="fillCredentials('civil.admin@demo.com', 'hospital123', 'hospital')" style="color: #0f766e; font-weight: 500;">
+              🏥 Civil Hospital Admin: <code>civil.admin@demo.com</code> / <code>hospital123</code>
+            </a>
+            <a href="javascript:void(0)" onclick="fillCredentials('kiran.admin@demo.com', 'hospital123', 'hospital')" style="color: #0f766e; font-weight: 500;">
+              🏥 Kiran Hospital Admin: <code>kiran.admin@demo.com</code> / <code>hospital123</code>
+            </a>
+            <a href="javascript:void(0)" onclick="fillCredentials('shalby.admin@demo.com', 'hospital123', 'hospital')" style="color: #0f766e; font-weight: 500;">
+              🏥 Shalby Hospital Admin: <code>shalby.admin@demo.com</code> / <code>hospital123</code>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ====================================================================
+       VIEW 3: PATIENT DASHBOARD & 10-STEP WORKFLOW
+       ==================================================================== -->
+  <main class="container view-page" id="view-patient" style="display: none; padding-top: 2rem; padding-bottom: 3rem;">
+    <!-- Dashboard Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #ecfdf5; color: #059669;">📅</div>
+        <div class="stat-info">
+          <div class="stat-value" id="pat-stat-total">0</div>
+          <div class="stat-label">Total Appointments</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #fef3c7; color: #d97706;">⏳</div>
+        <div class="stat-info">
+          <div class="stat-value" id="pat-stat-pending">0</div>
+          <div class="stat-label">Pending Approval</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #d1fae5; color: #047857;">✓</div>
+        <div class="stat-info">
+          <div class="stat-value" id="pat-stat-approved">0</div>
+          <div class="stat-label">Approved Appointments</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #e0f2fe; color: #0284c7;">🏥</div>
+        <div class="stat-info">
+          <div class="stat-value" id="pat-stat-completed">0</div>
+          <div class="stat-label">Completed Consultations</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Patient Sub Navigation Tabs -->
+    <div class="sub-tabs">
+      <button class="sub-tab-btn pat-sub-tab-btn active" data-tab="book-appointment">
+        ➕ Book Appointment (10-Step Flow)
+      </button>
+      <button class="sub-tab-btn pat-sub-tab-btn" data-tab="my-appointments">
+        📋 My Appointments
+      </button>
+      <button class="sub-tab-btn pat-sub-tab-btn" data-tab="history">
+        📜 Appointment History
+      </button>
+      <button class="sub-tab-btn pat-sub-tab-btn" data-tab="lab-reports">
+        🧪 Diagnostic Lab Reports
+      </button>
+      <button class="sub-tab-btn pat-sub-tab-btn" data-tab="profile">
+        👤 Patient Profile
+      </button>
+    </div>
+
+    <!-- SUB-TAB 1: 10-STEP APPOINTMENT BOOKING WIZARD -->
+    <div class="pat-sub-tab-content" id="pat-view-book-appointment">
+      <div class="card">
+        <!-- Visual Stepper Progress Bar -->
+        <div class="stepper">
+          <div class="step-item wizard-step-node active" data-step="1" onclick="PatientUI.goToStep(1)">
+            <div class="step-circle">1</div>
+            <div class="step-label">Hospital</div>
+          </div>
+          <div class="step-item wizard-step-node" data-step="2" onclick="if(PatientUI.selectedHospital) PatientUI.goToStep(2)">
+            <div class="step-circle">2</div>
+            <div class="step-label">Department</div>
+          </div>
+          <div class="step-item wizard-step-node" data-step="3" onclick="if(PatientUI.selectedDepartment) PatientUI.goToStep(3)">
+            <div class="step-circle">3</div>
+            <div class="step-label">Doctor</div>
+          </div>
+          <div class="step-item wizard-step-node" data-step="4" onclick="if(PatientUI.selectedDoctor) PatientUI.goToStep(4)">
+            <div class="step-circle">4</div>
+            <div class="step-label">Date</div>
+          </div>
+          <div class="step-item wizard-step-node" data-step="5" onclick="if(PatientUI.selectedDate) PatientUI.goToStep(5)">
+            <div class="step-circle">5</div>
+            <div class="step-label">Slots</div>
+          </div>
+          <div class="step-item wizard-step-node" data-step="7" onclick="if(PatientUI.selectedSlot) PatientUI.goToStep(7)">
+            <div class="step-circle">7</div>
+            <div class="step-label">Patient Info</div>
+          </div>
+          <div class="step-item wizard-step-node" data-step="8" onclick="if(PatientUI.bookingReason) PatientUI.goToStep(8)">
+            <div class="step-circle">8</div>
+            <div class="step-label">Confirm</div>
+          </div>
+          <div class="step-item wizard-step-node" data-step="10">
+            <div class="step-circle">10</div>
+            <div class="step-label">Status</div>
+          </div>
+        </div>
+
+        <!-- Wizard Step 1: Select Hospital -->
+        <div class="wizard-step-panel" id="wizard-step-1">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Step 1: Select Hospital</h3>
+              <p>Choose an accredited hospital in Surat to book your consultation.</p>
+            </div>
+          </div>
+          <div class="stats-grid" id="step-hospital-list" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Wizard Step 2: Select Department -->
+        <div class="wizard-step-panel" id="wizard-step-2" style="display: none;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Step 2: Select Specialty / Department</h3>
+              <p>Select the clinical specialty for your medical requirement.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="PatientUI.goToStep(1)">← Back to Hospitals</button>
+          </div>
+          <div class="stats-grid" id="step-dept-list" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Wizard Step 3: Select Doctor -->
+        <div class="wizard-step-panel" id="wizard-step-3" style="display: none;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Step 3: Select Consulting Doctor</h3>
+              <p>Choose from publicly listed medical specialists at this hospital.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="PatientUI.goToStep(2)">← Back to Departments</button>
+          </div>
+          <div class="stats-grid" id="step-doctor-list" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Wizard Step 4: Select Date -->
+        <div class="wizard-step-panel" id="wizard-step-4" style="display: none;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Step 4: Select Appointment Date</h3>
+              <p>Pick your preferred consultation date to check live slot availability.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="PatientUI.goToStep(3)">← Back to Doctors</button>
+          </div>
+          <div style="max-width: 400px; margin: 1.5rem auto; text-align: center;">
+            <div class="form-group">
+              <label class="form-label" style="text-align: center;">Appointment Date</label>
+              <input type="date" id="step-date-picker" class="form-control" style="font-size: 1.1rem; padding: 0.75rem; text-align: center;" />
+            </div>
+            <button class="btn btn-primary btn-block btn-lg" onclick="PatientUI.fetchSlotsForDate()">
+              Check Available Time Slots →
+            </button>
+          </div>
+        </div>
+
+        <!-- Wizard Step 5 & 6: Display & Select Time Slots -->
+        <div class="wizard-step-panel" id="wizard-step-5" style="display: none;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Step 5 & 6: Available Time Slots</h3>
+              <p>Green slots are available. Grey slots are already booked.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="PatientUI.goToStep(4)">← Change Date</button>
+          </div>
+          <div id="step-slots-container">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Wizard Step 7: Enter Patient Information -->
+        <div class="wizard-step-panel" id="wizard-step-7" style="display: none;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Step 7: Enter Patient Information & Reason</h3>
+              <p>Confirm patient demographics and state the chief medical complaint.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="PatientUI.goToStep(5)">← Back to Slots</button>
+          </div>
+          <div style="max-width: 600px; margin: 0 auto;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="form-group">
+                <label class="form-label">Full Name <span class="req">*</span></label>
+                <input type="text" id="step-pat-name" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Age & Gender <span class="req">*</span></label>
+                <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 0.5rem;">
+                  <input type="number" id="step-pat-age" class="form-control" placeholder="Age" min="1" max="120" required />
+                  <select id="step-pat-gender" class="form-control">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contact Phone <span class="req">*</span></label>
+              <input type="tel" id="step-pat-contact" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Primary Reason for Visit <span class="req">*</span></label>
+              <input type="text" id="step-pat-reason" class="form-control" placeholder="e.g. Severe knee joint stiffness during cold weather" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Symptoms / Notes (Optional)</label>
+              <textarea id="step-pat-symptoms" class="form-control" placeholder="Describe symptoms or ongoing treatments"></textarea>
+            </div>
+            <button class="btn btn-primary btn-block btn-lg" onclick="PatientUI.submitPatientInfo()">
+              Review & Confirm Booking →
+            </button>
+          </div>
+        </div>
+
+        <!-- Wizard Step 8 & 9: Confirm & Transmit Request -->
+        <div class="wizard-step-panel" id="wizard-step-8" style="display: none;">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Step 8: Confirm Appointment Details</h3>
+              <p>Double check your consultation details before dispatching the request.</p>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="PatientUI.goToStep(7)">← Edit Info</button>
+          </div>
+          <div style="max-width: 600px; margin: 0 auto;">
+            <div id="step-summary-card"></div>
+            <div style="text-align: center; margin-top: 1rem;">
+              <button id="step-confirm-btn" class="btn btn-success btn-lg btn-block" onclick="PatientUI.confirmBooking()">
+                🚀 Confirm & Send Appointment Request
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wizard Step 10: Appointment Status Display -->
+        <div class="wizard-step-panel" id="wizard-step-10" style="display: none;">
+          <div id="step-status-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUB-TAB 2: MY APPOINTMENTS TABLE -->
+    <div class="pat-sub-tab-content" id="pat-view-my-appointments" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">My Appointments</h3>
+          <!-- Filter Pills -->
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-primary btn-sm pat-filter-btn" data-filter="all">All</button>
+            <button class="btn btn-outline btn-sm pat-filter-btn" data-filter="Pending">Pending</button>
+            <button class="btn btn-outline btn-sm pat-filter-btn" data-filter="Approved">Approved</button>
+            <button class="btn btn-outline btn-sm pat-filter-btn" data-filter="Completed">Completed</button>
+            <button class="btn btn-outline btn-sm pat-filter-btn" data-filter="Cancelled">Cancelled</button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Appointment #</th>
+                <th>Hospital & Dept</th>
+                <th>Doctor</th>
+                <th>Date & Time</th>
+                <th>Status</th>
+                <th>Reason</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="pat-appointments-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUB-TAB 3: APPOINTMENT HISTORY -->
+    <div class="pat-sub-tab-content" id="pat-view-history" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Past Appointment History</h3>
+          <p>Archived completed and past medical appointments.</p>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Appointment #</th>
+                <th>Hospital</th>
+                <th>Doctor</th>
+                <th>Date & Slot</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="pat-history-table-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUB-TAB 4: PATIENT PROFILE -->
+    <div class="pat-sub-tab-content" id="pat-view-profile" style="display: none;">
+      <div class="card" style="max-width: 650px; margin: 0 auto;">
+        <div class="card-header">
+          <h3 class="card-title">Patient Profile & Health Details</h3>
+          <span class="badge" style="background: #ecfdf5; color: #065f46;">Personal Health Profile</span>
+        </div>
+
+        <form id="patient-profile-form">
+          <div class="form-group">
+            <label class="form-label" for="prof-fullname">Full Name <span class="req">*</span></label>
+            <input type="text" id="prof-fullname" class="form-control" required />
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label" for="prof-age">Age</label>
+              <input type="number" id="prof-age" class="form-control" min="1" max="120" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="prof-gender">Gender</label>
+              <select id="prof-gender" class="form-control">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prof-contact">Contact Number <span class="req">*</span></label>
+            <input type="tel" id="prof-contact" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prof-address">Residential Address (Surat)</label>
+            <input type="text" id="prof-address" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="prof-history">Known Allergies / Medical History</label>
+            <textarea id="prof-history" class="form-control"></textarea>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--border); gap: 1rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline-danger" onclick="PatientUI.deleteDemoAccount()" title="Deactivate and delete patient account">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                <line x1="10" y1="11" x2="10" y2="17"/>
+                <line x1="14" y1="11" x2="14" y2="17"/>
+              </svg>
+              <span>Deactivate Account</span>
+            </button>
+            <button type="submit" class="btn btn-primary" style="padding: 0.65rem 1.6rem; font-weight: 600; box-shadow: 0 4px 6px -1px rgba(5, 150, 105, 0.25);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>Update Profile</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- SUB-TAB 5: DIAGNOSTIC LAB REPORTS & MEDICAL VAULT -->
+    <div class="pat-sub-tab-content" id="pat-view-lab-reports" style="display: none;">
+      <div class="card">
+        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h3 class="card-title">Diagnostic Pathology & Radiology Vault</h3>
+            <p>Verified laboratory test results and diagnostic imaging reports issued by Surat accredited hospital labs.</p>
+          </div>
+          <button class="btn btn-outline-primary btn-sm" onclick="LabUI.loadReports()">
+            🔄 Refresh Lab Reports
+          </button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Report #</th>
+                <th>Diagnostic Test Name</th>
+                <th>Hospital & Clinical Laboratory</th>
+                <th>Prescribing Doctor</th>
+                <th>Specimen Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="pat-lab-reports-tbody">
+              <!-- Rendered dynamically by LabUI -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ====================================================================
+       VIEW 4: HOSPITAL DASHBOARD & WORKFLOW
+       ==================================================================== -->
+  <main class="container view-page" id="view-hospital" style="display: none; padding-top: 2rem; padding-bottom: 3rem;">
+    <!-- Hospital Header -->
+    <div class="card" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, #064e3b, #059669); color: #fff;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span style="font-size: 0.8rem; background: rgba(255,255,255,0.2); padding: 2px 10px; border-radius: 999px; text-transform: uppercase;">
+            Hospital Administration Console
+          </span>
+          <h2 id="hosp-profile-name-header" style="color: #fff; font-size: 1.8rem; margin: 0.4rem 0 0.2rem 0;">
+            New Civil Hospital Surat
+          </h2>
+          <p style="color: #ecfdf5; margin: 0; font-size: 0.9rem;">
+            Surat Healthcare Network Portal
+          </p>
+        </div>
+        <div>
+          <button class="btn btn-sm" style="background: rgba(255,255,255,0.2); color: #fff;" onclick="HospitalUI.loadDashboard()">
+            🔄 Refresh Real-Time Data
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hospital Dashboard Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #ecfdf5; color: #059669;">👨‍⚕️</div>
+        <div class="stat-info">
+          <div class="stat-value" id="hosp-stat-doctors">0</div>
+          <div class="stat-label">Total Doctors</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #e0f2fe; color: #0284c7;">📅</div>
+        <div class="stat-info">
+          <div class="stat-value" id="hosp-stat-today">0</div>
+          <div class="stat-label">Today's Appointments</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #fef3c7; color: #d97706;">⏳</div>
+        <div class="stat-info">
+          <div class="stat-value" id="hosp-stat-pending">0</div>
+          <div class="stat-label">Pending Requests</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #d1fae5; color: #047857;">✓</div>
+        <div class="stat-info">
+          <div class="stat-value" id="hosp-stat-approved">0</div>
+          <div class="stat-label">Approved</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #fee2e2; color: #dc2626;">✕</div>
+        <div class="stat-info">
+          <div class="stat-value" id="hosp-stat-cancelled">0</div>
+          <div class="stat-label">Cancelled</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: #ccfbf1; color: #0f766e;">🕒</div>
+        <div class="stat-info">
+          <div class="stat-value" id="hosp-stat-slots">0</div>
+          <div class="stat-label">Available Slots Today</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hospital Sub Navigation Tabs -->
+    <div class="sub-tabs">
+      <button class="sub-tab-btn hosp-sub-tab-btn active" data-tab="requests">
+        📥 Appointment Requests
+      </button>
+      <button class="sub-tab-btn hosp-sub-tab-btn" data-tab="queue">
+        📢 Live OPD Queue & Tokens
+      </button>
+      <button class="sub-tab-btn hosp-sub-tab-btn" data-tab="schedule">
+        ⏱️ Today's Doctor Schedule
+      </button>
+      <button class="sub-tab-btn hosp-sub-tab-btn" data-tab="doctors">
+        👨‍⚕️ Doctors Directory
+      </button>
+      <button class="sub-tab-btn hosp-sub-tab-btn" data-tab="departments">
+        🏢 Clinical Departments
+      </button>
+      <button class="sub-tab-btn hosp-sub-tab-btn" data-tab="slots">
+        🕒 OPD Time Slots
+      </button>
+      <button class="sub-tab-btn hosp-sub-tab-btn" data-tab="profile">
+        🏥 Hospital Profile
+      </button>
+    </div>
+
+    <!-- SUB-TAB 1: APPOINTMENT REQUESTS -->
+    <div class="hosp-sub-tab-content" id="hosp-view-requests">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Incoming Appointment Requests</h3>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-primary btn-sm hosp-filter-btn" data-filter="all">All</button>
+            <button class="btn btn-outline btn-sm hosp-filter-btn" data-filter="Pending">Pending</button>
+            <button class="btn btn-outline btn-sm hosp-filter-btn" data-filter="Approved">Approved</button>
+            <button class="btn btn-outline btn-sm hosp-filter-btn" data-filter="Completed">Completed</button>
+            <button class="btn btn-outline btn-sm hosp-filter-btn" data-filter="Cancelled">Cancelled</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Apt #</th>
+                <th>Patient Information</th>
+                <th>Assigned Doctor</th>
+                <th>Date & Slot</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="hosp-appointments-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUB-TAB 2: LIVE OPD DAILY QUEUE & TOKEN MONITOR -->
+    <div class="hosp-sub-tab-content" id="hosp-view-queue" style="display: none;">
+      <!-- Queue Header and Quick Stats -->
+      <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 1.5rem;">
+        <div class="stat-card" style="border-left: 4px solid var(--primary);">
+          <div class="stat-icon" style="background: #ecfdf5; color: #059669;">📢</div>
+          <div class="stat-info">
+            <div class="stat-value" id="queue-serving-token" style="color: #059669;">#01</div>
+            <div class="stat-label">Currently Serving Token</div>
+          </div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #0284c7;">
+          <div class="stat-icon" style="background: #e0f2fe; color: #0284c7;">⏭️</div>
+          <div class="stat-info">
+            <div class="stat-value" id="queue-next-token" style="color: #0284c7;">#02</div>
+            <div class="stat-label">Next In Queue</div>
+          </div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #d97706;">
+          <div class="stat-icon" style="background: #fef3c7; color: #d97706;">👥</div>
+          <div class="stat-info">
+            <div class="stat-value" id="queue-waiting-count">0</div>
+            <div class="stat-label">Patients In Waiting Room</div>
+          </div>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #10b981;">
+          <div class="stat-icon" style="background: #d1fae5; color: #047857;">✓</div>
+          <div class="stat-info">
+            <div class="stat-value" id="queue-completed-count">0</div>
+            <div class="stat-label">Consultations Completed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <h3 class="card-title">Live OPD Patient Queue & Call Board</h3>
+            <p>Real-time queue tracking for outpatient consultation rooms, token calling, and digital prescription issuance.</p>
+          </div>
+          <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+            <select id="queue-doc-filter" class="form-control" onchange="HospitalUI.renderQueueTable()" style="min-width: 220px;">
+              <option value="all">All OPD Consulting Rooms</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="HospitalUI.callNextPatient()">
+              📢 Call Next Token
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Token #</th>
+                <th>Patient Details</th>
+                <th>Consulting Doctor & Room</th>
+                <th>Slot Time</th>
+                <th>Visit Reason</th>
+                <th>Queue Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="hosp-queue-tbody">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUB-TAB 2: DOCTOR SCHEDULE -->
+    <div class="hosp-sub-tab-content" id="hosp-view-schedule" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">Today's Doctor Schedule & Patient Inspector</h3>
+            <p>Select doctor and schedule date to view Available and Booked slots. Click any booked slot for patient details.</p>
+          </div>
+          <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+            <select id="sched-doctor-select" class="form-control" style="min-width: 220px;"></select>
+            <input type="date" id="sched-date-input" class="form-control" />
+            <button class="btn btn-primary btn-sm" onclick="ScheduleUI.loadSchedule()">Inspect Schedule</button>
+          </div>
+        </div>
+
+        <div id="sched-doctor-header-info" style="margin-bottom: 1.5rem; background: var(--bg-muted); padding: 1.25rem; border-radius: var(--radius-md);">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div id="sched-slots-timeline">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- SUB-TAB 3: DOCTORS MANAGEMENT -->
+    <div class="hosp-sub-tab-content" id="hosp-view-doctors" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Doctor Staff Management</h3>
+          <button class="btn btn-primary btn-sm" onclick="HospitalUI.openAddDoctorModal()">➕ Add Doctor</button>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Doctor Name</th>
+                <th>Specialization & Dept</th>
+                <th>Exp</th>
+                <th>Fee</th>
+                <th>OPD & Room</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="hosp-doctors-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUB-TAB 4: DEPARTMENTS MANAGEMENT -->
+    <div class="hosp-sub-tab-content" id="hosp-view-departments" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Clinical Departments</h3>
+          <button class="btn btn-primary btn-sm" onclick="HospitalUI.openAddDeptModal()">➕ Add Department</button>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Department Name</th>
+                <th>Description</th>
+                <th>Doctors</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="hosp-depts-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUB-TAB 5: TIME SLOTS MANAGEMENT -->
+    <div class="hosp-sub-tab-content" id="hosp-view-slots" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3 class="card-title">OPD Time Slot Management</h3>
+            <p>Create, update slot status (Block/Unblock), or remove slots for doctors.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="HospitalUI.openAddSlotModal()">➕ Add Custom Slot</button>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: center; flex-wrap: wrap;">
+          <div style="flex-grow: 1; min-width: 200px;">
+            <label class="form-label">Doctor</label>
+            <select id="slot-mgr-doctor" class="form-control"></select>
+          </div>
+          <div style="min-width: 180px;">
+            <label class="form-label">Date</label>
+            <input type="date" id="slot-mgr-date" class="form-control" />
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Slot ID</th>
+                <th>Date</th>
+                <th>Timing</th>
+                <th>Doctor</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="hosp-slots-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUB-TAB 6: HOSPITAL PROFILE EDIT -->
+    <div class="hosp-sub-tab-content" id="hosp-view-profile" style="display: none;">
+      <div class="card" style="max-width: 700px; margin: 0 auto;">
+        <div class="card-header">
+          <h3 class="card-title">Hospital Profile Information</h3>
+        </div>
+        <form id="hospital-profile-form">
+          <div class="form-group">
+            <label class="form-label">Hospital Name <span class="req">*</span></label>
+            <input type="text" id="hosp-prof-name" class="form-control" required />
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Type / Category</label>
+              <input type="text" id="hosp-prof-type" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contact Phone <span class="req">*</span></label>
+              <input type="tel" id="hosp-prof-phone" class="form-control" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Address (Surat)</label>
+            <input type="text" id="hosp-prof-address" class="form-control" />
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Official Email</label>
+              <input type="email" id="hosp-prof-email" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Website URL</label>
+              <input type="url" id="hosp-prof-website" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Public OPD Timings</label>
+            <input type="text" id="hosp-prof-opd" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Overview Description</label>
+            <textarea id="hosp-prof-desc" class="form-control"></textarea>
+          </div>
+          <div style="text-align: right; margin-top: 1.5rem;">
+            <button type="submit" class="btn btn-primary">Save Hospital Profile</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- ====================================================================
+       GLOBAL MODAL DIALOGS
+       ==================================================================== -->
+
+  <!-- Edit Appointment Modal -->
+  <div class="modal-backdrop" id="edit-apt-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit Appointment Details</h3>
+        <button class="modal-close" onclick="closeModal('edit-apt-modal')">×</button>
+      </div>
+      <div class="modal-body" id="edit-apt-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Appointment Slip / Details Modal -->
+  <div class="modal-backdrop" id="apt-details-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Appointment Slip</h3>
+        <button class="modal-close" onclick="closeModal('apt-details-modal')">×</button>
+      </div>
+      <div class="modal-body" id="apt-details-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Doctor Modal -->
+  <div class="modal-backdrop" id="doctor-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Doctor Profile</h3>
+        <button class="modal-close" onclick="closeModal('doctor-modal')">×</button>
+      </div>
+      <div class="modal-body" id="doctor-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Add/Edit Department Modal -->
+  <div class="modal-backdrop" id="dept-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Clinical Department</h3>
+        <button class="modal-close" onclick="closeModal('dept-modal')">×</button>
+      </div>
+      <div class="modal-body" id="dept-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Add Time Slot Modal -->
+  <div class="modal-backdrop" id="slot-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Create Time Slot</h3>
+        <button class="modal-close" onclick="closeModal('slot-modal')">×</button>
+      </div>
+      <div class="modal-body" id="slot-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Booked Slot Patient Details Modal -->
+  <div class="modal-backdrop" id="booked-slot-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Booked Patient Consultation Details</h3>
+        <button class="modal-close" onclick="closeModal('booked-slot-modal')">×</button>
+      </div>
+      <div class="modal-body" id="booked-slot-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Patient Details Modal -->
+  <div class="modal-backdrop" id="patient-details-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Patient Profile Information</h3>
+        <button class="modal-close" onclick="closeModal('patient-details-modal')">×</button>
+      </div>
+      <div class="modal-body" id="patient-details-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Reschedule Appointment Modal -->
+  <div class="modal-backdrop" id="reschedule-apt-modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">🔄 Reschedule Appointment</h3>
+        <button class="modal-close" onclick="closeModal('reschedule-apt-modal')">×</button>
+      </div>
+      <div class="modal-body" id="reschedule-apt-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Doctor Consultation Prescription & Completion Modal -->
+  <div class="modal-backdrop" id="prescription-modal">
+    <div class="modal-dialog" style="max-width: 650px;">
+      <div class="modal-header">
+        <h3 class="modal-title">🩺 Complete Consultation & Clinical Notes</h3>
+        <button class="modal-close" onclick="closeModal('prescription-modal')">×</button>
+      </div>
+      <div class="modal-body" id="prescription-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- 108 Emergency Ambulance Dispatch Simulator Modal -->
+  <div class="modal-backdrop" id="ambulance-modal">
+    <div class="modal-dialog" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 class="modal-title">🚑 108 GVK EMRI Surat Emergency Dispatch</h3>
+        <button class="modal-close" onclick="closeModal('ambulance-modal')">×</button>
+      </div>
+      <div class="modal-body" id="ambulance-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Diagnostic Laboratory Report & Radiology Details Modal -->
+  <div class="modal-backdrop" id="lab-report-modal">
+    <div class="modal-dialog" style="max-width: 780px;">
+      <div class="modal-header">
+        <h3 class="modal-title">🧪 Diagnostic Medical Laboratory Report</h3>
+        <button class="modal-close" onclick="closeModal('lab-report-modal')">×</button>
+      </div>
+      <div class="modal-body" id="lab-report-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Patient Doctor Review & Rating Modal -->
+  <div class="modal-backdrop" id="doctor-review-modal">
+    <div class="modal-dialog" style="max-width: 550px;">
+      <div class="modal-header">
+        <h3 class="modal-title">⭐ Verified Patient Consultation Feedback</h3>
+        <button class="modal-close" onclick="closeModal('doctor-review-modal')">×</button>
+      </div>
+      <div class="modal-body" id="doctor-review-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Emergency Blood Requisition Modal -->
+  <div class="modal-backdrop" id="blood-request-modal">
+    <div class="modal-dialog" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 class="modal-title">🩸 Emergency Blood Bank Unit Requisition</h3>
+        <button class="modal-close" onclick="closeModal('blood-request-modal')">×</button>
+      </div>
+      <div class="modal-body" id="blood-request-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Official Digital Prescription (Rx) Modal -->
+  <div class="modal-backdrop" id="view-rx-modal">
+    <div class="modal-dialog" style="max-width: 780px;">
+      <div class="modal-header">
+        <h3 class="modal-title">📄 Official Digital Medical Prescription (Rx)</h3>
+        <button class="modal-close" onclick="closeModal('view-rx-modal')">×</button>
+      </div>
+      <div class="modal-body" id="view-rx-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Live OPD Token Queue Modal -->
+  <div class="modal-backdrop" id="queue-modal">
+    <div class="modal-dialog" style="max-width: 540px;">
+      <div class="modal-header">
+        <h3 class="modal-title">🎫 Live OPD Token & Consultation Queue</h3>
+        <button class="modal-close" onclick="closeModal('queue-modal')">×</button>
+      </div>
+      <div class="modal-body" id="queue-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div style="font-weight: 700; color: #ffffff; margin-bottom: 0.35rem; font-size: 1rem;">
+        ONLINE HOSPITAL APPOINTMENT BOOKING SYSTEM
+      </div>
+      <div style="color: #a7f3d0; font-size: 0.85rem; max-width: 600px; margin: 0 auto; line-height: 1.5;">
+        Surat Healthcare Network • Connecting patients with New Civil, Kiran, Shalby, Sunshine Global, and Mahavir Hospital.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Inline Helper Scripts for Home Role Switcher -->
+  <script>
+    function switchHomeRole(role) {
+      const isPatient = role === 'patient';
+      document.getElementById('home-role-patient').classList.toggle('active', isPatient);
+      document.getElementById('home-role-hospital').classList.toggle('active', !isPatient);
+      document.getElementById('home-patient-section').style.display = isPatient ? 'block' : 'none';
+      document.getElementById('home-hospital-section').style.display = isPatient ? 'none' : 'block';
+    }
+
+    function updateHospitalLoginFill() {
+      const email = document.getElementById('home-hosp-selector').value;
+      document.getElementById('home-hosp-email').value = email;
+      document.getElementById('home-hosp-pass').value = 'hospital123';
+    }
+
+    function fillPatientDemo() {
+      document.getElementById('home-pat-email').value = 'rahul.sharma@demo.com';
+      document.getElementById('home-pat-pass').value = 'patient123';
+      if (typeof showToast === 'function') {
+        showToast('Demo patient credentials populated.', 'info');
+      }
+    }
+
+    function showAuthTab(tab) {
+      document.getElementById('auth-tab-login').classList.toggle('active', tab === 'login');
+      document.getElementById('auth-tab-register').classList.toggle('active', tab === 'register');
+      document.getElementById('login-form').style.display = tab === 'login' ? 'block' : 'none';
+      document.getElementById('register-form').style.display = tab === 'register' ? 'block' : 'none';
+    }
+
+    function fillCredentials(email, pass, role) {
+      showAuthTab('login');
+      document.getElementById('login-email').value = email;
+      document.getElementById('login-password').value = pass;
+      const roleBtns = document.querySelectorAll('.role-select-btn');
+      roleBtns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.role === role);
+      });
+      if (window.Auth) window.Auth.selectedRole = role;
+    }
+  </script>
+
+  <!-- Application Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/patient.js"></script>
+  <script src="js/hospital.js"></script>
+  <script src="js/schedule.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

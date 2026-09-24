@@ -1,0 +1,23 @@
+id,user_id,full_name,age,gender,contact,address,medical_history
+1,1,Rahul Sharma,34,Male,+91-98250-12345,Flat 402 Shivalik Residency Adajan Surat,Hypertension Type 2 Diabetes (controlled)
+2,2,Pooja Patel,28,Female,+91-98790-23456,12 Anand Nagar Katargam Surat,Mild seasonal asthma no known drug allergies
+3,3,Amitabh Desai,52,Male,+91-94260-34567,B-14 Silver Palms VIP Road Vesu Surat,Post-CABG 2021 hyperlipidemia on statin therapy
+4,4,Meena Choksi,45,Female,+91-98241-45678,28 Paras Society Athwalines Surat,Migraine with aura cervical spondylosis
+5,5,Jayesh Gheewala,39,Male,+91-98980-56789,503 Orchid Heights Pal Surat,Chronic acid peptic disease allergic to penicillin
+6,6,Kavita Dave,31,Female,+91-97270-67890,7 Nilkanth Row House Rander Surat,Hypothyroidism on levothyroxine 50mcg daily
+7,7,Dhaval Mehta,42,Male,+91-94080-78901,88 Vardhman Nagar Citylight Surat,Kidney stones history (2023) uric acid normal
+8,8,Ritu Trivedi,26,Female,+91-99090-89012,Flat 204 Green Acres Althan Surat,PCOS irregular cycles no other systemic illness
+9,9,Sanjay Bhatt,61,Male,+91-98252-90123,101 Shanti Kunj Nanpura Surat,Hypertension osteoarthritis bilateral knees
+10,10,Sneha Vashi,36,Female,+91-98795-01234,44 Surya Complex Ghod Dod Road Surat,Allergic rhinitis lumbar disc protrusion L4-L5
+11,11,Kishore Jariwala,58,Male,+91-94268-12340,15 Mahadev Nagar Varachha Surat,Type 2 diabetes mellitus on metformin 500mg
+12,12,Ananya Shah,22,Female,+91-98249-23451,B-302 Heritage Crest Piplod Surat,Contact dermatitis myopia (-2.5 D)
+13,13,Manish Panchal,49,Male,+91-98984-34562,71 Gokul Society Udhna Surat,Chronic sinusitis gastroesophageal reflux
+14,14,Bhavna Solanki,54,Female,+91-97275-45673,C-12 Shrinathji Villa Jahangirpura Surat,Post-menopausal osteopenia vitamin D deficiency
+15,15,Tushar Parikh,37,Male,+91-94086-56784,92 Swastik Bunglows Dumas Road Surat,Dyslipidemia mild fatty liver grade 1
+16,16,Swati Contractor,29,Female,+91-99097-67895,301 Shivalik Heights Bhatar Road Surat,None healthy prenatal pre-conception consult
+17,17,Harish Modi,67,Male,+91-98256-78906,5 Sharda Society Majura Gate Surat,Benign prostatic hyperplasia (BPH) hypertension
+18,18,Geeta Kapadia,48,Female,+91-98798-89017,18 Somnath Row House Katargam Surat,Tension headache anxiety non-smoker
+19,19,Vikram Rajput,33,Male,+91-94269-90128,102 Galaxy Appt Ring Road Surat,Left shoulder rotator cuff strain from gym
+20,20,Sunita Patel,41,Female,+91-98245-01239,Flat 501 Marvel Residency Vesu Surat,Iron deficiency anemia on oral hematinics
+21,21,Chetan Shah,50,Male,+91-98988-12341,24 Suryakant Park Adajan Surat,Elevated triglycerides borderline blood pressure
+22,22,Farida Merchant,38,Female,+91-97279-23452,14 Gulshan Colony Rander Road Surat,Bronchial hyper-reactivity pollen allergy
