@@ -165,10 +165,11 @@ const HospitalUI = {
     tbody.innerHTML = list.map(apt => {
       const isPending = apt.status === 'Pending';
       const isApproved = apt.status === 'Approved';
+      const isCompleted = apt.status === 'Completed';
 
       return `
         <tr>
-          <td><strong>#${escapeHtml(apt.appointment_number)}</strong></td>
+          <td><strong style="color: var(--primary); cursor: pointer;" onclick="HospitalUI.viewDetails(${apt.appointment_id})" title="Click to view appointment details">#${escapeHtml(apt.appointment_number)}</strong></td>
           <td>
             <div style="font-weight: 600; cursor: pointer; color: var(--primary);" onclick="HospitalUI.viewPatientDetails(${apt.patient_id})">
               ${escapeHtml(apt.patient_name)}
@@ -183,14 +184,14 @@ const HospitalUI = {
             <div>${formatDate(apt.date)}</div>
             <small style="font-weight: 600; color: var(--primary);">${escapeHtml(apt.time_slot)}</small>
           </td>
-          <td style="max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+          <td style="max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${escapeHtml(apt.reason)}">
             ${escapeHtml(apt.reason)}
           </td>
           <td>
             <span class="badge badge-${apt.status.toLowerCase()}">${escapeHtml(apt.status)}</span>
           </td>
           <td>
-            <div style="display: flex; gap: 0.35rem; flex-wrap: wrap;">
+            <div style="display: flex; gap: 0.35rem; flex-wrap: wrap; align-items: center;">
               ${isPending ? `
                 <button class="btn btn-success btn-sm" onclick="HospitalUI.updateStatus(${apt.appointment_id}, 'Approved')">Approve</button>
                 <button class="btn btn-danger btn-sm" onclick="HospitalUI.promptReject(${apt.appointment_id})">Reject</button>
@@ -199,7 +200,12 @@ const HospitalUI = {
                 <button class="btn btn-success btn-sm" onclick="HospitalUI.openCompleteWithPrescriptionModal(${apt.appointment_id})">🩺 Prescribe & Complete</button>
                 <button class="btn btn-danger btn-sm" onclick="HospitalUI.updateStatus(${apt.appointment_id}, 'Cancelled')">Cancel</button>
               ` : ''}
-              <button class="btn btn-outline btn-sm" onclick="PatientUI.viewDetails(${apt.appointment_id})">View Slip</button>
+              ${isCompleted ? `
+                <button class="btn btn-primary btn-sm" onclick="HospitalUI.viewPrescription(${apt.appointment_id})">📄 View Prescription</button>
+              ` : ''}
+              ${['Cancelled', 'Rejected'].includes(apt.status) ? `
+                <span style="color: var(--text-muted); font-size: 0.8rem;">—</span>
+              ` : ''}
             </div>
           </td>
         </tr>
@@ -226,6 +232,18 @@ const HospitalUI = {
     const reason = prompt('Please specify a rejection reason for this appointment request:', 'Doctor emergency surgery conflict');
     if (reason !== null) {
       this.updateStatus(appointmentId, 'Rejected', reason);
+    }
+  },
+
+  async viewDetails(appointmentId) {
+    if (typeof PatientUI !== 'undefined' && PatientUI.viewDetails) {
+      return PatientUI.viewDetails(appointmentId);
+    }
+  },
+
+  async viewPrescription(appointmentId) {
+    if (typeof PatientUI !== 'undefined' && PatientUI.viewPrescription) {
+      return PatientUI.viewPrescription(appointmentId);
     }
   },
 
@@ -927,8 +945,8 @@ const HospitalUI = {
                   🩺 Prescribe
                 </button>
               ` : `
-                <button class="btn btn-outline btn-sm" onclick="PatientUI.viewDetails(${apt.appointment_id})">
-                  View Rx Pass
+                <button class="btn btn-outline btn-sm" onclick="HospitalUI.viewPrescription(${apt.appointment_id})">
+                  📄 View Prescription
                 </button>
               `}
             </div>

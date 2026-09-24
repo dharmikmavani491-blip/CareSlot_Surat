@@ -858,9 +858,25 @@ const PatientUI = {
     return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="background: #ffffff; padding: 4px; border: 1px solid #d1fae5; border-radius: 4px; display: block;">${rects}</svg>`;
   },
 
-  viewDetails(appointmentId) {
-    const apt = this.appointments.find(a => a.appointment_id === appointmentId);
-    if (!apt) return;
+  async viewDetails(appointmentId) {
+    let apt = (this.appointments || []).find(a => a.appointment_id === appointmentId);
+    if (!apt && typeof HospitalUI !== 'undefined' && HospitalUI.appointments) {
+      apt = HospitalUI.appointments.find(a => a.appointment_id === appointmentId);
+    }
+    if (!apt) {
+      try {
+        const res = await API.request(`/appointments/${appointmentId}`);
+        if (res && res.success && res.data) {
+          apt = res.data;
+        }
+      } catch (err) {
+        console.error('Failed to load appointment details:', err);
+      }
+    }
+    if (!apt) {
+      showToast('Could not find appointment details.', 'error');
+      return;
+    }
 
     const modalBody = document.getElementById('apt-details-modal-body');
     if (!modalBody) return;
@@ -969,7 +985,12 @@ const PatientUI = {
         <!-- Footer Actions -->
         <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 1rem;" class="no-print">
           <button class="btn btn-outline btn-sm" onclick="closeModal('apt-details-modal')">Close</button>
-          <div style="display: flex; gap: 0.5rem;">
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            ${apt.status === 'Completed' ? `
+              <button class="btn btn-outline-primary btn-sm" onclick="closeModal('apt-details-modal'); PatientUI.viewPrescription(${apt.appointment_id})">
+                📄 View Doctor's Prescription (Rx Script)
+              </button>
+            ` : ''}
             ${['Pending', 'Approved'].includes(apt.status) ? `
               <button class="btn btn-outline-primary btn-sm" onclick="closeModal('apt-details-modal'); PatientUI.openRescheduleModal(${apt.appointment_id})">
                 🔄 Reschedule Slot
